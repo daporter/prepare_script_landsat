@@ -234,8 +234,8 @@ def add_datacube_dataset(bucket_name, config, prefix, start, stop):
 @click.argument('bucket_name')
 @click.option('--config', '-c', help=" Pass the config file to access the database", type=click.Path(exists=True))
 @click.option('--prefix', '-p', help="Pass the prefix of the object to the bucket")
-@click.option('--start', '-s', default=None, help="Pass the prefix of the object to the bucket")
-@click.option('--stop', '-f', default=None, help="Pass the prefix of the object to the bucket")
+@click.option('--start', '-s', default=None, help="Pass the path and row for the object to start from eg: 134/76")
+@click.option('--stop', '-f', default=None, help="Pass {path}/{row} to create a box to index eg: 123/90")
 def main(bucket_name, config, prefix, start, stop):
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
     add_datacube_dataset(bucket_name, config, prefix, start, stop)
