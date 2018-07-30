@@ -205,7 +205,7 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
 
 def make_rules(index):
     all_product_names = [prod.name for prod in index.products.get_all()]
-    rules = parse_match_rules_options(index, None, all_product_names, True)
+    rules = parse_match_rules_options(index, all_product_names, True)
     return rules
 
 
