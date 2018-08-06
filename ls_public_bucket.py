@@ -193,6 +193,7 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
         for path in range(int(start[0]), int(stop[0]), -1):
             for row in range(int(start[1]), int(stop[1]), 1):
                 prefix_new = (str(prefix) + '/' + str(format(path, '03d')) + '/' + str(format(row, '03d')))
+                logging.info("Processing prefix: %s", prefix_new)
                 for obj in bucket.objects.filter(Prefix=prefix_new):
                     if obj.key.endswith('MTL.txt') and (not obj.key.endswith('RT_MTL.txt')):
                         obj_key = obj.key
