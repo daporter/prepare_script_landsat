@@ -194,7 +194,7 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
             for row in range(int(start[1]), int(stop[1]), 1):
                 prefix_new = (str(prefix) + '/' + str(format(path, '03d')) + '/' + str(format(row, '03d')))
                 logging.info("Processing prefix: %s", prefix_new)
-                for obj in bucket.objects:
+                for obj in bucket.objects.all():
                     logging.info("* Bucket object: %s", obj.key)
                 for obj in bucket.objects.filter(Prefix=prefix_new):
                     logging.info("Processing obj: %s", obj.key)
