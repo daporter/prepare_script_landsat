@@ -240,6 +240,7 @@ def add_datacube_dataset(bucket_name, config, prefix, start, stop):
 @click.option('--stop', '-f', default=None, help="Pass {path}/{row} to create a box to index eg: 123/90")
 def main(bucket_name, config, prefix, start, stop):
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+    logging.info("Config: %s", config)
     add_datacube_dataset(bucket_name, config, prefix, start, stop)
 
 
