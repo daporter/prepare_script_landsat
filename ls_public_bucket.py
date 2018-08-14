@@ -207,9 +207,14 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
 
 def make_rules(index):
     all_product_names = [prod.name for prod in index.products.get_all()]
-    rules = parse_match_rules_options(index, all_product_names, True)
-    return rules
+    
+    logging.info("* all_product_names: %s", all_product_names)
 
+    rules = parse_match_rules_options(index, all_product_names, True)
+
+    logging.info("* Rules: %s", rules)
+
+    return rules
 
 def add_dataset(doc, uri, rules, index):
     dataset = create_dataset(doc, uri, rules)
