@@ -229,6 +229,9 @@ def add_dataset(doc, uri, rules, index):
 def add_datacube_dataset(bucket_name, config, prefix, start, stop):
     dc = datacube.Datacube(config=config)
     index = dc.index
+
+    logging.info("* index: %s", index)
+
     rules = make_rules(index)
 
     for metadata_path, metadata_doc in get_metadata_docs(bucket_name, prefix, start, stop):
