@@ -226,8 +226,6 @@ def add_datacube_dataset(bucket_name, config, prefix, start, stop):
     index = dc.index
     rules = make_rules(index)
 
-    logging.info("* datacube config: %s", dc.config)
-
     for metadata_path, metadata_doc in get_metadata_docs(bucket_name, prefix, start, stop):
         uri = get_s3_url(bucket_name, metadata_path)
         add_dataset(metadata_doc, uri, rules, index)
