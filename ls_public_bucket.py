@@ -204,13 +204,7 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
 
 def make_rules(index):
     all_product_names = [prod.name for prod in index.products.get_all()]
-    
-    logging.info("* all_product_names: %s", all_product_names)
-
     rules = parse_match_rules_options(index, all_product_names, True)
-
-    logging.info("* Rules: %s", rules)
-
     return rules
 
 def add_dataset(doc, uri, rules, index):
@@ -242,7 +236,6 @@ def add_datacube_dataset(bucket_name, config, prefix, start, stop):
 @click.option('--stop', '-f', default=None, help="Pass {path}/{row} to create a box to index eg: 123/90")
 def main(bucket_name, config, prefix, start, stop):
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
-    logging.info("Config: %s", config)
     add_datacube_dataset(bucket_name, config, prefix, start, stop)
 
 
