@@ -186,7 +186,6 @@ def make_metadata_doc(mtl_data, bucket_name, object_key):
 def get_metadata_docs(bucket_name, prefix, start, stop):
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(bucket_name)
-    logging.info("Bucket : %s", bucket_name)
     if prefix and start and stop is not None:
         start = start.split("/")
         stop = stop.split("/")
@@ -195,10 +194,8 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
                 prefix_new = (str(prefix) + '/' + str(format(path, '03d')) + '/' + str(format(row, '03d')))
                 logging.info("Processing prefix: %s", prefix_new)
                 for obj in bucket.objects.filter(Prefix=prefix_new):
-                    logging.info("Processing obj: %s", obj.key)
                     if obj.key.endswith('MTL.txt') and (not obj.key.endswith('RT_MTL.txt')):
                         obj_key = obj.key
-                        logging.info("Processing %s", obj_key)
                         raw_string = obj.get()['Body'].read().decode('utf8')
                         mtl_doc = _parse_group(iter(raw_string.split("\n")))['L1_METADATA_FILE']
                         metadata_doc = make_metadata_doc(mtl_doc, bucket_name, obj_key)
@@ -229,9 +226,6 @@ def add_dataset(doc, uri, rules, index):
 def add_datacube_dataset(bucket_name, config, prefix, start, stop):
     dc = datacube.Datacube(config=config)
     index = dc.index
-
-    logging.info("* index: %s", index)
-
     rules = make_rules(index)
 
     for metadata_path, metadata_doc in get_metadata_docs(bucket_name, prefix, start, stop):
