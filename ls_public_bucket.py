@@ -183,24 +183,6 @@ def make_metadata_doc(mtl_data, bucket_name, object_key):
     return doc
 
 
-# def get_metadata_docs(bucket_name, prefix, start, stop):
-#     s3 = boto3.resource('s3')
-#     bucket = s3.Bucket(bucket_name)
-#     if prefix and start and stop is not None:
-#         start = start.split("/")
-#         stop = stop.split("/")
-#         for path in range(int(start[0]), int(stop[0]), -1):
-#             for row in range(int(start[1]), int(stop[1]), 1):
-#                 prefix_new = (str(prefix) + '/' + str(format(path, '03d')) + '/' + str(format(row, '03d')))
-#                 logging.info("Processing prefix: %s", prefix_new)
-#                 for obj in bucket.objects.filter(Prefix=prefix_new):
-#                     if obj.key.endswith('MTL.txt') and (not obj.key.endswith('RT_MTL.txt')):
-#                         obj_key = obj.key
-#                         raw_string = obj.get()['Body'].read().decode('utf8')
-#                         mtl_doc = _parse_group(iter(raw_string.split("\n")))['L1_METADATA_FILE']
-#                         metadata_doc = make_metadata_doc(mtl_doc, bucket_name, obj_key)
-#                         yield obj_key, metadata_doc
-
 def get_metadata_docs(bucket_name, prefix, start, stop):
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(bucket_name)
@@ -209,15 +191,16 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
         stop = stop.split("/")
         for path in range(int(start[0]), int(stop[0]), -1):
             for row in range(int(start[1]), int(stop[1]), 1):
-                # prefix_new = (str(prefix) + '/' + str(format(path, '03d')) + '/' + str(format(row, '03d')))
-                # logging.info("Processing prefix: %s", prefix_new)
-                for obj in bucket.objects.filter(Prefix='L8'):
+                prefix_new = (str(prefix) + '/' + str(format(path, '03d')) + '/' + str(format(row, '03d')))
+                logging.info("Processing prefix: %s", prefix_new)
+                for obj in bucket.objects.filter(Prefix=prefix_new):
                     if obj.key.endswith('MTL.txt') and (not obj.key.endswith('RT_MTL.txt')):
                         obj_key = obj.key
                         raw_string = obj.get()['Body'].read().decode('utf8')
                         mtl_doc = _parse_group(iter(raw_string.split("\n")))['L1_METADATA_FILE']
                         metadata_doc = make_metadata_doc(mtl_doc, bucket_name, obj_key)
                         yield obj_key, metadata_doc
+
 
 def make_rules(index):
     all_product_names = [prod.name for prod in index.products.get_all()]
