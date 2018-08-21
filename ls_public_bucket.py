@@ -201,6 +201,7 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
                         try:
                             metadata_doc = make_metadata_doc(mtl_doc, bucket_name, obj_key)
                         except KeyError:
+                            logging.info("KeyError: %s; continuing", obj_key)
                             continue
                         yield obj_key, metadata_doc
 
