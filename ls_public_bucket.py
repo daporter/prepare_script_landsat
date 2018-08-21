@@ -198,7 +198,10 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
                         obj_key = obj.key
                         raw_string = obj.get()['Body'].read().decode('utf8')
                         mtl_doc = _parse_group(iter(raw_string.split("\n")))['L1_METADATA_FILE']
-                        metadata_doc = make_metadata_doc(mtl_doc, bucket_name, obj_key)
+                        try:
+                            metadata_doc = make_metadata_doc(mtl_doc, bucket_name, obj_key)
+                        except KeyError:
+                            continue
                         yield obj_key, metadata_doc
 
 
