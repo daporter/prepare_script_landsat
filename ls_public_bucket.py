@@ -196,14 +196,15 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
                 for obj in bucket.objects.filter(Prefix=prefix_new):
                     if obj.key.endswith('MTL.txt') and (not obj.key.endswith('RT_MTL.txt')):
                         obj_key = obj.key
-                        raw_string = obj.get()['Body'].read().decode('utf8')
-                        mtl_doc = _parse_group(iter(raw_string.split("\n")))['L1_METADATA_FILE']
                         try:
+                            raw_string = obj.get()['Body'].read().decode('utf8')
+                            mtl_doc = _parse_group(iter(raw_string.split("\n")))['L1_METADATA_FILE']
                             metadata_doc = make_metadata_doc(mtl_doc, bucket_name, obj_key)
-                        except KeyError:
-                            logging.info("KeyError: %s; continuing", obj_key)
+                        except Exception as err:
+                            logging.info("Error: %s: %s. Continuing...", format(err), obj_key)
                             continue
-                        yield obj_key, metadata_doc
+                        else:
+                            yield obj_key, metadata_doc
 
 
 def make_rules(index):
