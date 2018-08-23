@@ -201,7 +201,7 @@ def get_metadata_docs(bucket_name, prefix, start, stop):
                             mtl_doc = _parse_group(iter(raw_string.split("\n")))['L1_METADATA_FILE']
                             metadata_doc = make_metadata_doc(mtl_doc, bucket_name, obj_key)
                         except Exception as err:
-                            logging.info("Error: %s: %s. Continuing...", format(err), obj_key)
+                            logging.info("Error: %s: %s. Continuing...", err, obj_key)
                             continue
                         else:
                             yield obj_key, metadata_doc
